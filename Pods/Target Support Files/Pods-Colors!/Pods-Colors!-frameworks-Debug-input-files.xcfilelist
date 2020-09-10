@@ -1,0 +1,4 @@
+${PODS_ROOT}/Target Support Files/Pods-Colors!/Pods-Colors!-frameworks.sh
+${BUILT_PRODUCTS_DIR}/Realm/Realm.framework
+${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework
+${BUILT_PRODUCTS_DIR}/TableViewDragger/TableViewDragger.framework
