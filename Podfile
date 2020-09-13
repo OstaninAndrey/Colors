@@ -6,5 +6,4 @@ target 'Colors!' do
 
   # Pods for Colors!
   pod 'RealmSwift'
-  pod "TableViewDragger"
 end

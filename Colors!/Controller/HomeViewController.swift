@@ -27,11 +27,16 @@ class HomeViewController: ViewController {
     }
     
     func setupButtonsShape() {
-        startButton.layer.cornerRadius = K.Corner.cellRadius
-        nameTextField.layer.cornerRadius = K.Corner.cellRadius
+        startButton.layer.cornerRadius = K.Corner.defaultRadius
+        nameTextField.layer.cornerRadius = K.Corner.defaultRadius
+        nameTextField.clipsToBounds = true
     }
     
     @IBAction func startGameButtonAction(_ sender: UIButton) {
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)                              //for keyboard hiding
     }
     
 }

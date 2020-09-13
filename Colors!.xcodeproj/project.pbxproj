@@ -16,8 +16,6 @@
 		22DF894E2503EF200072F376 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22DF894D2503EF200072F376 /* Constants.swift */; };
 		22DF89512503FFAC0072F376 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22DF89502503FFAC0072F376 /* User.swift */; };
 		22DF8953250510540072F376 /* LevelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22DF8952250510540072F376 /* LevelViewController.swift */; };
-		22DF8956250511C60072F376 /* ColoredTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22DF8954250511C60072F376 /* ColoredTableViewCell.swift */; };
-		22DF8957250511C60072F376 /* ColoredTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22DF8955250511C60072F376 /* ColoredTableViewCell.xib */; };
 		22DF8959250513920072F376 /* GameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22DF8958250513920072F376 /* GameManager.swift */; };
 		22DF895B250513E20072F376 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22DF895A250513E20072F376 /* HomeViewController.swift */; };
 		22DF895E2505929B0072F376 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22DF895D2505929B0072F376 /* UIColorExtension.swift */; };
@@ -36,8 +34,6 @@
 		22DF894D2503EF200072F376 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		22DF89502503FFAC0072F376 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		22DF8952250510540072F376 /* LevelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelViewController.swift; sourceTree = "<group>"; };
-		22DF8954250511C60072F376 /* ColoredTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColoredTableViewCell.swift; sourceTree = "<group>"; };
-		22DF8955250511C60072F376 /* ColoredTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ColoredTableViewCell.xib; sourceTree = "<group>"; };
 		22DF8958250513920072F376 /* GameManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameManager.swift; sourceTree = "<group>"; };
 		22DF895A250513E20072F376 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		22DF895D2505929B0072F376 /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
@@ -106,8 +102,6 @@
 			isa = PBXGroup;
 			children = (
 				22DF894B2503E6A60072F376 /* Main.storyboard */,
-				22DF8954250511C60072F376 /* ColoredTableViewCell.swift */,
-				22DF8955250511C60072F376 /* ColoredTableViewCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -207,7 +201,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				22DF8957250511C60072F376 /* ColoredTableViewCell.xib in Resources */,
 				22558C6024BC822A00244BBD /* LaunchScreen.storyboard in Resources */,
 				22558C5D24BC822A00244BBD /* Assets.xcassets in Resources */,
 				22DF894C2503E6A60072F376 /* Main.storyboard in Resources */,
@@ -267,7 +260,6 @@
 				22DF8959250513920072F376 /* GameManager.swift in Sources */,
 				22558C5424BC822700244BBD /* AppDelegate.swift in Sources */,
 				22558C5624BC822700244BBD /* SceneDelegate.swift in Sources */,
-				22DF8956250511C60072F376 /* ColoredTableViewCell.swift in Sources */,
 				22DF895B250513E20072F376 /* HomeViewController.swift in Sources */,
 				22DF8953250510540072F376 /* LevelViewController.swift in Sources */,
 				22DF895E2505929B0072F376 /* UIColorExtension.swift in Sources */,

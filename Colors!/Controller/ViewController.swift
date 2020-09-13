@@ -19,7 +19,7 @@ class ViewController: UIViewController {
     var headLabel: UILabel = .init()
     var colors: [UIView] = .init()
     var touchOffset: CGPoint = .init()
-    var draggingView: UIView = .init()
+    //var draggingView: UIView = .init()
     
     // MARK: - Constants
     let numberOfElemsBeforeColors = 2
@@ -83,41 +83,9 @@ class ViewController: UIViewController {
         return false
     }
     
-    func showAnswerImage(fileName: String) {
-        print(fileName)
-        let answerImage = UIImageView(image: UIImage.init(named: fileName))
-        answerImage.center = self.view.center
-        
-        UIView.animate(withDuration: CATransaction.animationDuration()*2, delay: 0, options: [.curveEaseIn], animations: {
-            self.view.addSubview(answerImage)
-            answerImage.transform = CGAffineTransform.init(scaleX: 0.5, y: 0.5)
-            answerImage.alpha = 0
-        }, completion: nil)
-    }
     
     @objc func checkResultButton(sender: UIButton) {
-        correctConditionForAnswerChoosing() ? showAnswerImage(fileName: "Correct.png") : showAnswerImage(fileName: "Incorrect.png")
-    }
-    
-    // MARK: - Touches
-    var canMove = false
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true)                              //for keyboard hiding
-        
-        print("TOUCH STARTED")
-    }
-    
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
-    }
-    
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
-    }
-    
-    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
+       // correctConditionForAnswerChoosing() ? showAnswerImage(fileName: "Correct.png") : showAnswerImage(fileName: "Incorrect.png")
     }
     
 }

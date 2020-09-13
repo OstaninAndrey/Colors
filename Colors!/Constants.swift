@@ -10,9 +10,12 @@ import UIKit
 struct K {
 
     struct Corner {
-        static let cellRadius = CGFloat(20)
+        static let defaultRadius = CGFloat(20)
     }
     
-    static let cellIdentifier = "coloredCell"
-    static let cellNibName = "ColoredTableViewCell"
+    struct Constraints {
+        static let spaceBetweenViews: CGFloat = 10
+        static let leftSpace: CGFloat = 20
+        static let rightSpace: CGFloat = -20
+    }
 }

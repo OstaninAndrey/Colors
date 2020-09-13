@@ -4,23 +4,19 @@ PODS:
   - Realm/Headers (5.3.6)
   - RealmSwift (5.3.6):
     - Realm (= 5.3.6)
-  - TableViewDragger (1.3.0)
 
 DEPENDENCIES:
   - RealmSwift
-  - TableViewDragger
 
 SPEC REPOS:
   trunk:
     - Realm
     - RealmSwift
-    - TableViewDragger
 
 SPEC CHECKSUMS:
   Realm: cd400dd7e5b5bb5c8ae9842eecd73792369e6ec0
   RealmSwift: 99a16dbdee5d6dfb3d91d56088a9f8c15c0871d1
-  TableViewDragger: 5933729a18d1606e16388d72f6d4fe5f3a0bcaf4
 
-PODFILE CHECKSUM: 61dc486a2f7bbd03a3e31a3457481594cf77f199
+PODFILE CHECKSUM: e4e656c1647107a2d6d8b48adb98d9c5be3f43d3
 
 COCOAPODS: 1.9.3
