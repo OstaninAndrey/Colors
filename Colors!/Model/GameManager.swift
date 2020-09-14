@@ -11,6 +11,7 @@ import UIKit
 
 protocol GameDelegate {
     func didTriesCountBecameZero()
+    func gameWillFinish()
 }
 
 class GameManager{
@@ -80,6 +81,9 @@ class GameManager{
         if counterUp == array.count || counterDown == array.count {
             levelPassed = true
             userScore += numberOfElems * triesLeft * currentLevel
+            if currentLevel == 9 {
+                delegate?.gameWillFinish()
+            }
         }
         else {
             levelPassed = false

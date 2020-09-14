@@ -154,10 +154,22 @@ class LevelViewController: ViewController {
     }
     
     @IBAction func nextLevelButtonAction(_ sender: UIButton) {
-        if let vc = storyboard?.instantiateViewController(identifier: "LevelVC") as? LevelViewController, gameManager.levelPassed {
-            vc.gameManager = self.gameManager
-            gameManager.currentLevel += 1
-            navigationController?.pushViewController(vc, animated: true)
+        if gameManager.currentLevel == 9, gameManager.levelPassed {
+            let warning = UIAlertController(title: "Congratulations!!!",
+                                            message: "You are the one of a little amount of people who could do this! Your score is \(gameManager.userScore).",
+                                        preferredStyle: .alert)
+            warning.addAction(UIAlertAction(title: "Back to menu", style: .default, handler: { (alert) in
+                self.animate {
+                    self.navigationController?.popToRootViewController(animated: false)
+                }
+            }))
+            present(warning, animated: true)
+        } else {
+            if let vc = storyboard?.instantiateViewController(identifier: "LevelVC") as? LevelViewController, gameManager.levelPassed {
+                vc.gameManager = self.gameManager
+                gameManager.currentLevel += 1
+                navigationController?.pushViewController(vc, animated: true)
+            }
         }
     }
     
@@ -173,6 +185,7 @@ class LevelViewController: ViewController {
         }))
         
         present(warning, animated: true)
+        
     }
     
     // MARK: - Touches and user interaction
@@ -262,6 +275,11 @@ class LevelViewController: ViewController {
 
 // MARK: - GameDelegate extension
 extension LevelViewController: GameDelegate{
+    
+    func gameWillFinish() {
+        nextLevelButton.setTitle("Finish", for: .normal)
+    }
+    
     
     func didTriesCountBecameZero() {
         let warning = UIAlertController(title: "Oops! You've lost.",
