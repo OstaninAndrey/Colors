@@ -15,6 +15,9 @@ class LevelViewController: ViewController {
     @IBOutlet weak var nextLevelButton: UIButton!
     @IBOutlet weak var checkButtonOutlet: UIButton!
     @IBOutlet weak var backgroundView: UIView!
+    @IBOutlet weak var scoreLabel: UILabel!
+    @IBOutlet weak var triesLabel: UILabel!
+    @IBOutlet weak var usernameLabel: UILabel!
     
     var colorsArray: [UIView] = []
     var gameManager = GameManager()
@@ -32,11 +35,18 @@ class LevelViewController: ViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.hidesBackButton = true
+        navigationController?.navigationBar.shadowImage = UIImage()
+        gameManager.delegate = self
+
+        usernameLabel.text = gameManager.userName
         setTitleColor()
+        showTriesLeftLabel()
+        showScoreLabel()
         setupButtonsShape()
         colorsArray = gameManager.generateArray()
         animate {
             self.drawGameScreen()
+            self.view.layoutIfNeeded()
         }
     }
     
@@ -68,6 +78,10 @@ class LevelViewController: ViewController {
         nextLevelButton.layer.cornerRadius = K.Corner.defaultRadius
         checkButtonOutlet.layer.cornerRadius = K.Corner.defaultRadius
         backgroundView.layer.cornerRadius = K.Corner.defaultRadius
+        scoreLabel.layer.cornerRadius = K.Corner.smallRadius
+        scoreLabel.clipsToBounds = true
+        triesLabel.layer.cornerRadius = K.Corner.smallRadius
+        triesLabel.clipsToBounds = true
     }
     
     func drawGameScreen() {
@@ -88,18 +102,7 @@ class LevelViewController: ViewController {
             
             colorsArray[i].layer.cornerRadius = K.Corner.defaultRadius
         }
-    }
-    
-    func showAnswerImage(fileName: String) {
-        print(fileName)
-        let answerImage = UIImageView(image: UIImage.init(named: fileName))
-        answerImage.center = self.view.center
         
-        UIView.animate(withDuration: CATransaction.animationDuration()*2, delay: 0, options: [.curveEaseIn], animations: {
-            self.view.addSubview(answerImage)
-            answerImage.transform = CGAffineTransform.init(scaleX: 0.5, y: 0.5)
-            answerImage.alpha = 0
-        }, completion: nil)
     }
     
     func clearGameScreen() {
@@ -108,21 +111,52 @@ class LevelViewController: ViewController {
         }
     }
     
-    func animate(_ closure: @escaping () -> Void) {
-        UIView.animate(withDuration: CATransaction.animationDuration(), delay: 0, options: [.curveEaseOut], animations: {
+    func animate(delay: TimeInterval = 0, _ closure: @escaping () -> Void) {
+        UIView.animate(withDuration: CATransaction.animationDuration(), delay: delay, options: [.curveEaseOut], animations: {
             closure()
-            self.view.layoutIfNeeded()
         }, completion: nil)
+    }
+    
+    func checkButtonCorrectState() {
+        checkButtonOutlet.backgroundColor = .green
+        checkButtonOutlet.setTitleColor(.white, for: .normal)
+        checkButtonOutlet.isEnabled = false
+        checkButtonOutlet.layer.borderColor = UIColor.white.cgColor
+        checkButtonOutlet.layer.borderWidth = 4
+    }
+    
+    func checkButtonIncorrectState() {
+        checkButtonOutlet.backgroundColor = .red
+        animate {
+            self.checkButtonOutlet.backgroundColor = .white
+        }
+        checkButtonOutlet.shake()
+    }
+    
+    func showTriesLeftLabel() {
+        triesLabel.text = "\(self.gameManager.triesLeft) tries left!"
+    }
+    
+    func showScoreLabel() {
+        scoreLabel.text = "Score: \(gameManager.userScore)"
     }
     // MARK: - IBActions
     @IBAction func checkButtonAction(_ sender: UIButton) {
-        
+        gameManager.checkAnswer(for: colorsArray)
+        if gameManager.levelPassed {
+            checkButtonCorrectState()
+            showScoreLabel()
+        }
+        else {
+            checkButtonIncorrectState()
+            showTriesLeftLabel()
+        }
     }
     
     @IBAction func nextLevelButtonAction(_ sender: UIButton) {
-        if let vc = storyboard?.instantiateViewController(identifier: "LevelVC") as? LevelViewController {
+        if let vc = storyboard?.instantiateViewController(identifier: "LevelVC") as? LevelViewController, gameManager.levelPassed {
             vc.gameManager = self.gameManager
-            vc.gameManager.currentLevel += 1
+            gameManager.currentLevel += 1
             navigationController?.pushViewController(vc, animated: true)
         }
     }
@@ -154,7 +188,6 @@ class LevelViewController: ViewController {
             draggingView = touchedView
             backgroundView.bringSubviewToFront(draggingView)
         }
-        print("TOUCH STARTED")
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -163,21 +196,35 @@ class LevelViewController: ViewController {
         }
         
         let location = touch.location(in: view)
-        draggingView.frame.origin.x = location.x - offset.x
-        draggingView.frame.origin.y = location.y - offset.y
+        if backgroundView.frame.contains(location){
+            draggingView.frame.origin.x = location.x - offset.x
+            draggingView.frame.origin.y = location.y - offset.y
+        }
+        else {
+            self.animate {
+                self.drawGameScreen()
+                self.view.layoutIfNeeded()
+            }
+        }
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if let newIndex = findMaxIntersectionIndex(), let oldIndex = originalIndex{
-            clearGameScreen()
-            colorsArray.remove(at: oldIndex)
-            colorsArray.insert(self.draggingView, at: newIndex)
+        isDragging = false
+        guard let newIndex = findMaxIntersectionIndex(), let oldIndex = originalIndex else {
             self.animate {
                 self.drawGameScreen()
+                self.view.layoutIfNeeded()
             }
+            return
         }
-        
-        isDragging = false
+        clearGameScreen()
+        colorsArray.remove(at: oldIndex)
+        colorsArray.insert(self.draggingView, at: newIndex)
+        self.animate {
+            self.drawGameScreen()
+            self.view.layoutIfNeeded()
+        }
+        backgroundView.bringSubviewToFront(colorsArray[newIndex])
     }
     
     // MARK: - Drag additional methods
@@ -185,12 +232,12 @@ class LevelViewController: ViewController {
         var touchedView: UIView?
         for i in 0..<colorsArray.count {
             let location = touch.location(in: colorsArray[i])
+            let locationInView = touch.location(in: view)
             if colorsArray[i].bounds.contains(location) {
                 touchedView = colorsArray[i]
-                offset.x = location.x - colorsArray[i].bounds.origin.x + K.Constraints.leftSpace
-                offset.y = location.y - colorsArray[i].bounds.origin.y + K.Constraints.spaceBetweenViews
+                offset.x = locationInView.x - colorsArray[i].frame.origin.x //+ K.Constraints.leftSpace
+                offset.y = locationInView.y - colorsArray[i].frame.origin.y //+ K.Constraints.spaceBetweenViews
                 originalIndex = i
-                
             }
         }
         return touchedView
@@ -209,6 +256,24 @@ class LevelViewController: ViewController {
         }
         
         return intersectionIndex
+    }
+    
+}
+
+// MARK: - GameDelegate extension
+extension LevelViewController: GameDelegate{
+    
+    func didTriesCountBecameZero() {
+        let warning = UIAlertController(title: "Oops! You've lost.",
+                                        message: "Youre score is \(gameManager.userScore). Don't worry and train more and more and more...",
+                                    preferredStyle: .alert)
+        warning.addAction(UIAlertAction(title: "Back to menu", style: .default, handler: { (alert) in
+            self.animate {
+                self.navigationController?.popToRootViewController(animated: false)
+            }
+        }))
+        
+        present(warning, animated: true)
     }
     
 }

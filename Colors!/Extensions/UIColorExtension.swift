@@ -25,9 +25,11 @@ extension UIColor {
         return hue
     }
 
-    static func getRandom(r: CGFloat = CGFloat.random(in: 0...1), g: CGFloat = CGFloat.random(in: 0...1),
-                          b: CGFloat = CGFloat.random(in: 0...1), alpha: CGFloat = 1) -> UIColor{
-        return UIColor(red: r, green: g, blue: b, alpha: alpha)
+    static func getRandom() -> UIColor{
+        let r = CGFloat.random(in: 0.4...1)
+        let g = CGFloat.random(in: 0.4...1)
+        let b = CGFloat.random(in: 0.4...1)
+        return UIColor(red: r, green: g, blue: b, alpha: 1)
     }
 
 }

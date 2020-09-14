@@ -11,11 +11,15 @@ struct K {
 
     struct Corner {
         static let defaultRadius = CGFloat(20)
+        static let smallRadius = CGFloat(10)
     }
     
     struct Constraints {
         static let spaceBetweenViews: CGFloat = 10
         static let leftSpace: CGFloat = 20
         static let rightSpace: CGFloat = -20
+        static let answerImgDimension: CGFloat = 100
     }
+    
+    static let gameScreenSegueID = "GameScreenSegue"
 }
