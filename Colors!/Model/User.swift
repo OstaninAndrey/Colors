@@ -7,10 +7,9 @@
 //
 
 import Foundation
-import RealmSwift
 
-class User: Object {
-    @objc dynamic var name = ""
-    @objc dynamic var score = 0
+struct User {
+    var name: String
+    var score: Int
     
 }

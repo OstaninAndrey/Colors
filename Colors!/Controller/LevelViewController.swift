@@ -8,9 +8,9 @@
 
 import Foundation
 import UIKit
-import RealmSwift
+import Firebase
 
-class LevelViewController: ViewController {
+class LevelViewController: UIViewController {
     
     @IBOutlet weak var nextLevelButton: UIButton!
     @IBOutlet weak var checkButtonOutlet: UIButton!
@@ -174,11 +174,14 @@ class LevelViewController: ViewController {
     }
     
     @IBAction func exitPressedAction(_ sender: UIBarButtonItem) {
+        
         let warning = UIAlertController(title: "Quit",
                                     message: "Are you sure want to quit the game?",
                                     preferredStyle: .alert)
         warning.addAction(UIAlertAction(title: "Cancel", style: .destructive, handler: nil))
+        
         warning.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (alert) in
+            self.gameManager.delegate?.gameWillFinish()
             self.animate {
                 self.navigationController?.popToRootViewController(animated: false)
             }
@@ -277,15 +280,24 @@ class LevelViewController: ViewController {
 extension LevelViewController: GameDelegate{
     
     func gameWillFinish() {
-        nextLevelButton.setTitle("Finish", for: .normal)
+        // save data
+        gameManager.saveUserProgress()
+        
+        if gameManager.levelPassed, gameManager.currentLevel == 9 {
+            nextLevelButton.setTitle("Finish", for: .normal)
+        }
+        
     }
     
     
     func didTriesCountBecameZero() {
+        gameManager.saveUserProgress()
+        
         let warning = UIAlertController(title: "Oops! You've lost.",
                                         message: "Youre score is \(gameManager.userScore). Don't worry and train more and more and more...",
                                     preferredStyle: .alert)
         warning.addAction(UIAlertAction(title: "Back to menu", style: .default, handler: { (alert) in
+            
             self.animate {
                 self.navigationController?.popToRootViewController(animated: false)
             }

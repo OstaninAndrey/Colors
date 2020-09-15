@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import Firebase
 
 protocol GameDelegate {
     func didTriesCountBecameZero()
@@ -61,11 +62,11 @@ class GameManager{
             array.append(view)
         }
         
+        levelPassed = false
         return array
     }
     
     func checkAnswer(for array: [UIView]){
-        // check by hue, change levelPassed prop
         var counterUp = 1, counterDown = 1
         for i in 1..<array.count {
             if let first = array[i-1].backgroundColor?.hue, let second = array[i].backgroundColor?.hue {
@@ -81,19 +82,35 @@ class GameManager{
         if counterUp == array.count || counterDown == array.count {
             levelPassed = true
             userScore += numberOfElems * triesLeft * currentLevel
-            if currentLevel == 9 {
-                delegate?.gameWillFinish()
-            }
+            
+            if currentLevel == 9 { delegate?.gameWillFinish() }
         }
         else {
-            levelPassed = false
             triesLeft -= 1
+            
+            if triesLeft == 0 { delegate?.didTriesCountBecameZero() }
         }
-        if triesLeft == 0 { delegate?.didTriesCountBecameZero() }
     }
     
     func getSubviewHeight(for backgroundView: UIView) -> CGFloat {
         return (backgroundView.bounds.height - K.Constraints.spaceBetweenViews * CGFloat(numberOfElems + 1)) / CGFloat(numberOfElems)
+    }
+    
+    func saveUserProgress() {
+        let db = Firestore.firestore()
+        
+        if userScore != 0 {
+            db.collection(K.FStore.userCollectionName).addDocument(data: [
+                K.FStore.nameField: userName,
+                K.FStore.scoreField: userScore
+            ]) { (error) in
+                if let e = error {
+                    print("Invalid adding: \(e)")
+                } else {
+                    print("Data has been saved successfully")
+                }
+            }
+        }
     }
     
 }

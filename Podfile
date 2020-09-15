@@ -5,5 +5,6 @@ target 'Colors!' do
   use_frameworks!
 
   # Pods for Colors!
-  pod 'RealmSwift'
+  pod 'Firebase/Firestore'
+  
 end

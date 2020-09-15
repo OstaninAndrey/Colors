@@ -9,6 +9,9 @@ import UIKit
 
 struct K {
 
+    static let reuseCell = "RecordTableCell"
+    static let cellNibName = "RecordTableCell"
+    
     struct Corner {
         static let defaultRadius = CGFloat(20)
         static let smallRadius = CGFloat(10)
@@ -22,4 +25,10 @@ struct K {
     }
     
     static let gameScreenSegueID = "GameScreenSegue"
+    
+    struct FStore {
+        static let userCollectionName = "user"
+        static let nameField = "name"
+        static let scoreField = "score"
+    }
 }
